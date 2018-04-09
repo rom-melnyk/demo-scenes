@@ -1,0 +1,28 @@
+{
+  "name": "girona",
+  "version": "1.0.0",
+  "description": "Girona city river bank",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rom-melnyk/girona.git"
+  },
+  "keywords": [
+    "js",
+    "es6",
+    "canvas",
+    "paint",
+    "draw",
+    "girona",
+    "spain"
+  ],
+  "author": "Roman Melnyk <https://melnyk.site>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rom-melnyk/girona/issues"
+  },
+  "homepage": "https://github.com/rom-melnyk/girona#readme"
+}
