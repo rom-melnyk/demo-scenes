@@ -10,42 +10,44 @@ const browserify = require('browserify');
 const uglify = require('uglify-es');
 const composer = require('gulp-uglify/composer');
 
-const NAME = require('./package.json').name;
-const DEST = 'bin/';
+const ENTRY = 'src/index.js';
+const DEST_NAME = 'demo.js';
+const DEST_DIR = `demo/`;
+
 const minify = composer(uglify, console);
 
 
 /** @subtasks-group clean */
-gulp.task('clean:js', () => del([ `${DEST}${NAME}.min.js*` ]));
+gulp.task('clean:js', () => del([ `${DEST_DIR}${DEST_NAME}*` ]));
 
 
 /** @subtasks-group JS */
 gulp.task('js:dev', [ 'clean:js' ],  () => {
     const b = browserify({
-        entries: 'src/index.js',
+        entries: ENTRY,
         debug: true
     });
 
     return b.bundle()
-        .pipe(source(`${NAME}.min.js`))
+        .pipe(source(DEST_NAME))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(DEST));
+        .pipe(gulp.dest(DEST_DIR));
 });
 
 gulp.task('js:prod', [ 'clean:js' ],  () => {
     const b = browserify({
-        entries: 'src/index.js'
+        entries: ENTRY
     });
 
     return b.bundle()
             .on('error', gutil.log)
-        .pipe(source(`${NAME}.min.js`))
+        .pipe(source(DEST_NAME))
         .pipe(buffer())
         .pipe(minify())
             .on('error', gutil.log)
-        .pipe(gulp.dest(DEST));
+        .pipe(gulp.dest(DEST_DIR));
 });
 
 

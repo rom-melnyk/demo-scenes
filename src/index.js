@@ -1,8 +1,13 @@
-const { value } = require('./import-me');
+const { renderer } = require('./renderer');
 
 
 function runDemo() {
-    console.info(`It works: ${value}`);
+    const canvasEl = document.getElementsByTagName('canvas')[0];
+    renderer.init(canvasEl);
+    console.info(renderer);
+
+    renderer.drawRect(10, 10, 30, 80, { fill: '#dea' });
+    renderer.drawRect(50, 80, 80, 20);
 }
 
 
