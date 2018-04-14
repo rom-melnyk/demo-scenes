@@ -1,7 +1,7 @@
 {
-  "name": "girona",
+  "name": "demo-scenes",
   "version": "1.0.0",
-  "description": "Girona city river bank",
+  "description": "Demo scenaes (HTML/CSS, Canvas)",
   "main": "src/index.js",
   "scripts": {
     "start": "gulp",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rom-melnyk/girona.git"
+    "url": "git+https://github.com/rom-melnyk/demo-scenes.git"
   },
   "keywords": [
     "js",
@@ -19,15 +19,16 @@
     "canvas",
     "paint",
     "draw",
+    "boomerang",
     "girona",
     "spain"
   ],
   "author": "Roman Melnyk <https://melnyk.site>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rom-melnyk/girona/issues"
+    "url": "https://github.com/rom-melnyk/demo-scenes/issues"
   },
-  "homepage": "https://github.com/rom-melnyk/girona#readme",
+  "homepage": "https://github.com/rom-melnyk/demo-scenes#readme",
   "devDependencies": {
     "browserify": "^16.1.1",
     "del": "^3.0.0",

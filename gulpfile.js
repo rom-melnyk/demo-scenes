@@ -29,6 +29,7 @@ gulp.task('js:dev', [ 'clean:js' ],  () => {
     });
 
     return b.bundle()
+            .on('error', gutil.log)
         .pipe(source(DEST_NAME))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
