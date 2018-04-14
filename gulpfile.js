@@ -12,7 +12,7 @@ const composer = require('gulp-uglify/composer');
 
 const ENTRY = 'src/index.js';
 const DEST_NAME = 'demo.js';
-const DEST_DIR = `demo/`;
+const DEST_DIR = `demo/js/`;
 
 const minify = composer(uglify, console);
 
