@@ -1,13 +1,39 @@
 const { renderer } = require('./renderer');
+const { initBoomerang, runBoomerang } = require('./boomerang');
 
+
+let navEl;
+let canvasEl;
+let navHideTimer = null;
+
+function scheduleNavHide() {
+    console.log('Nav hiding scheduled');
+    navHideTimer = setTimeout(() => {
+        console.log('Nav hiding');
+        navEl.classList.add('hidden');
+        navHideTimer = null;
+    }, 3000);
+}
 
 function runDemo() {
-    const canvasEl = document.getElementsByTagName('canvas')[0];
+    canvasEl = document.querySelector('canvas');
     renderer.init(canvasEl);
-    console.info(renderer);
 
-    renderer.drawRect(10, 10, 30, 80, { fill: '#dea' });
-    renderer.drawRect(50, 80, 80, 20);
+    navEl = document.querySelector('nav');
+    scheduleNavHide();
+
+    document.addEventListener('mousemove', () => {
+        if (navHideTimer === null) {
+            navEl.classList.remove('hidden');
+            scheduleNavHide();
+        }
+    });
+
+    navEl.addEventListener('mouseover', () => { clearTimeout(navHideTimer); });
+    navEl.addEventListener('mouseout', () => { scheduleNavHide(); });
+
+    initBoomerang();
+    runBoomerang();
 }
 
 
