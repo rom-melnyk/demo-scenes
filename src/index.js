@@ -7,9 +7,7 @@ let canvasEl;
 let navHideTimer = null;
 
 function scheduleNavHide() {
-    console.log('Nav hiding scheduled');
     navHideTimer = setTimeout(() => {
-        console.log('Nav hiding');
         navEl.classList.add('hidden');
         navHideTimer = null;
     }, 3000);

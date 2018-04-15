@@ -56,7 +56,7 @@ const LINES = [];
 function initBoomerang() {
     LINES.push( new Line(renderer.width, renderer.height) );
     window.addEventListener('keypress', ({ charCode }) => {
-        console.log('Pressed ', charCode);
+        // console.log('Pressed ', charCode);
         if (charCode === 32 /* space */) {
             isPaused = !isPaused;
             if (!isPaused) {
