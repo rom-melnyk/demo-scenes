@@ -57,7 +57,7 @@ class Boomerang extends AbstractScene {
         super();
         this.name = 'Boomerang';
         this.linesCount = 20;
-        this.lines = [];
+        this.blurTrail = [];
         this._hue = 0;
 
         this.keypressListener = ({ charCode, shiftKey }) => {
@@ -81,7 +81,7 @@ class Boomerang extends AbstractScene {
 
 
     get hue() {
-        this._hue += .1;
+        this._hue += .5;
         if (this._hue > 360) { this._hue = 0; }
         return Math.round(this._hue);
     }
@@ -94,10 +94,13 @@ class Boomerang extends AbstractScene {
 
     reset() {
         super.reset();
-        this.lines = [];
-        this.lines.push( new Line(renderer.width, renderer.height) );
-        this.linesCount = 20;
         this._hue = random(0, 360);
+        this.blurTrail = [];
+        this.blurTrail.push({
+            line: new Line(renderer.width, renderer.height),
+            hue: this.hue
+        });
+        this.linesCount = 20;
     }
 
 
@@ -114,23 +117,25 @@ class Boomerang extends AbstractScene {
 
     animationFrame() {
         for (let i = this.linesCount - 1; i > 0; i--) {
-            const line = this.lines[ i - 1 ];
-            this.lines[i] = line;
-            if (line) {
+            const lineAndHue = this.blurTrail[ i - 1 ];
+            this.blurTrail[i] = lineAndHue;
+            if (lineAndHue) {
+                const { line, hue } = lineAndHue;
                 const percent = 1 - i / this.linesCount;
                 const alpha = roundDec10(percent);
                 const saturation = Math.round( percent * 60 + 20 );
                 const lightness = Math.round( 90 - percent * 40 );
-                const color = hslaColor(line.hue, saturation, lightness, alpha);
+                const color = hslaColor(hue, saturation, lightness, alpha);
                 const width = roundDec10( percent * 15 + 5 );
                 line.draw(renderer, { color, width });
             }
         }
-        const newLine = this.lines[0].clone();
-        newLine.hue = this.hue;
-        this.lines[0] = newLine;
+
+        const newLine = this.blurTrail[0].line.clone();
+        const newHue = this.hue;
+        this.blurTrail[0] = { line: newLine, hue: newHue };
         newLine.move();
-        newLine.draw(this.renderer, { color: hslaColor(newLine.hue, 100, 50), width: 20 });
+        newLine.draw(this.renderer, { color: hslaColor(newHue, 100, 50), width: 20 });
     }
 }
 

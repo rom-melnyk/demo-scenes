@@ -17,8 +17,8 @@ function random(from = 0, to = 1) {
 
 function hslaColor(h, s, l, alpha = 1) {
     // quick HSL channels normalization
-    if (h < 0) { return 360 - (360 - h) % 360; }
-    if (h >= 360) { return h % 360; }
+    if (h < 0) { h = 360 - (360 - h) % 360; }
+    if (h >= 360) { h = h % 360; }
     s = Math.max(0, Math.min(s, 100));
     l = Math.max(0, Math.min(l, 100));
     alpha = Math.max(0, Math.min(alpha, 1));
