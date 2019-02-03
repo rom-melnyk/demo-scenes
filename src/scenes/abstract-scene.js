@@ -25,6 +25,7 @@ class AbstractScene {
   }
 
   animationFrame() {
+    // To be implemented in concrete class
   }
 
   animate() {

@@ -2,6 +2,9 @@ class Navigation {
   constructor() {
     this.navEl = null;
     this.navHideTimer = null;
+    this.mouseMoveListener = this.mouseMoveListener.bind(this);
+    this.mouseOverListener = this.mouseOverListener.bind(this);
+    this.mouseOutListener = this.mouseOutListener.bind(this);
   }
 
 
@@ -20,12 +23,10 @@ class Navigation {
 
 
   addDemoScenes(demoscenes) {
-
   }
 
 
   removeDemoScenes() {
-
   }
 
 
