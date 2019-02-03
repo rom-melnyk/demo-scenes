@@ -1,43 +1,43 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
-    font-family: "Open Sans", Tahoma, Arial, sans-serif;
-    font-size: 22px;
+  font-family: "Open Sans", Tahoma, Arial, sans-serif;
+  font-size: 22px;
 }
 
 canvas {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
 }
 
 h1 {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 
 nav {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 2em;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2em;
 
-    background-color: hsla(0, 0%, 80%, .5);
-    transition: top .3s ease-in-out;
+  background-color: hsla(0, 0%, 80%, .5);
+  transition: top .3s ease-in-out;
 }
 
 
 nav.hidden {
-    top: -10em;
+  top: -10em;
 }

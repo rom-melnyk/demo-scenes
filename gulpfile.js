@@ -38,11 +38,12 @@ function taskJSDev() {
 }
 
 function taskJSWatch(done) {
-  gulp.watch([ 'src/**/*' ], () => {
+  gulp.watch([ 'src/**/*' ], (watchDone) => {
     gulp.series(
       taskCleanJS,
       taskJSDev
     );
+    watchDone();
   });
   done();
 }

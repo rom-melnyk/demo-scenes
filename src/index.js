@@ -3,22 +3,22 @@ const { navigation } = require('./navigation');
 const { boomerang } = require('./scenes/boomerang');
 
 
-
 function runDemo() {
-    const canvasEl = document.querySelector('canvas');
-    renderer.init(canvasEl);
+  const canvasEl = document.querySelector('canvas');
+  renderer.init(canvasEl);
 
-    navigation.init();
+  const navigationEl = document.querySelector('nav');
+  navigation.init(navigationEl);
 
-    boomerang.init(renderer);
-    boomerang.mount();
+  boomerang.init(renderer);
+  boomerang.mount();
 }
 
 
 if (typeof window !== 'undefined') {
-    window.runDemo = runDemo;
+  window.runDemo = runDemo;
 }
 
 if (typeof module !== 'undefined') {
-    module.exports = { runDemo };
+  module.exports = { runDemo };
 }
