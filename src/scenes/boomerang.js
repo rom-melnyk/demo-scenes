@@ -1,6 +1,6 @@
 const AbstractScene = require('./abstract-scene');
 const { renderer, LINE_STYLE } = require('../renderer');
-const { roundDec10, hslaColor, random } = require('../utils');
+const { round, hslaColor, random } = require('../utils');
 
 
 class Line {
@@ -13,10 +13,10 @@ class Line {
     this.x2 = Math.round(this.cnvWidth * .6);
     this.y2 = Math.round(this.cnvHeight * .6);
 
-    this.dx1 = roundDec10((Math.random() * 3 - 1.5) * 10);
-    this.dy1 = roundDec10((Math.random() * 2 - 1) * 10);
-    this.dx2 = roundDec10((Math.random() * 3 - 1.5) * 10);
-    this.dy2 = roundDec10((Math.random() * 2 - 1) * 10);
+    this.dx1 = round((Math.random() * 3 - 1.5) * 10, -1);
+    this.dy1 = round((Math.random() * 2 - 1) * 10, -1);
+    this.dx2 = round((Math.random() * 3 - 1.5) * 10, -1);
+    this.dy2 = round((Math.random() * 2 - 1) * 10, -1);
   }
 
   move() {
@@ -148,11 +148,11 @@ class Boomerang extends AbstractScene {
       if (lineAndHue) {
         const { line, hue } = lineAndHue;
         const percent = 1 - i / this.linesCount;
-        const alpha = roundDec10(percent);
+        const alpha = round(percent, -2);
         const saturation = Math.round(percent * 60 + 20);
         const lightness = Math.round(90 - percent * 40);
         const color = hslaColor(hue, saturation, lightness, alpha);
-        const width = roundDec10(percent * 15 + 5);
+        const width = round(percent * 15 + 5, -1);
         line.draw(renderer, { color, width });
       }
     }

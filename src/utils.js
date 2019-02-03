@@ -1,10 +1,11 @@
-function round10(x) {
-  return Math.round(x / 10) * 10;
-}
-
-
-function roundDec10(x) {
-  return Math.round(x * 10) / 10;
+function round(number, power = 0) {
+  if (power < 0) {
+    const pow = Math.pow(10, -power);
+    return Math.round(number * pow) / pow;
+  } else {
+    const pow = Math.pow(10, power);
+    return Math.round(number / pow) * pow;
+  }
 }
 
 
@@ -32,8 +33,7 @@ function hslaColor(h, s, l, alpha = 1) {
 
 
 module.exports = {
-  round10,
-  roundDec10,
+  round,
   random,
   hslaColor,
 };
