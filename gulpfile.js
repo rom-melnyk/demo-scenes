@@ -17,7 +17,7 @@ const DEST_DIR = `demo/js/`;
 const minify = composer(uglify, console);
 
 
-function taskCleanJS() {
+function taskClean() {
   return del([ `${DEST_DIR}${DEST_NAME}*` ]);
 }
 
@@ -37,17 +37,6 @@ function taskJSDev() {
     .pipe(gulp.dest(DEST_DIR));
 }
 
-function taskJSWatch(done) {
-  gulp.watch([ 'src/**/*' ], (watchDone) => {
-    gulp.series(
-      taskCleanJS,
-      taskJSDev
-    );
-    watchDone();
-  });
-  done();
-}
-
 function taskJSProd() {
   const b = browserify({
     entries: ENTRY
@@ -64,16 +53,12 @@ function taskJSProd() {
 
 // ---------------------------------------
 
-exports.dev = gulp.series(
-  taskCleanJS,
-  taskJSDev,
-  taskJSWatch
-);
+exports.dev = function dev(done) {
+  gulp.watch([ 'src/**/*' ], { ignoreInitial: false }, gulp.series(taskClean, taskJSDev));
+  done();
+};
 
-exports.prod = gulp.series(
-  taskCleanJS,
-  taskJSProd
-);
+exports.prod = gulp.series(taskClean, taskJSProd);
 
 exports.default = function _default(done) {
   console.log('\n\tUse `gulp dev` or `gulp prod`.\n');
