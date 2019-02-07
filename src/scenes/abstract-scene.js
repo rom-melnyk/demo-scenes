@@ -3,25 +3,33 @@ class AbstractScene {
     this.isPaused = true;
     this.renderer = null;
     this.name = 'AbstractScene';
+    this.keyHandlers = [
+      /* { keys: [ {code, shiftKey?, ctrlKey?, altKey?} ], description: '', handler() {} } */
+    ];
+    this.keypressListener = this.keypressListener.bind(this);
   }
 
   init(renderer) {
     this.renderer = renderer;
     console.info(`${this.name} initialized`);
+    this.addKeyHandler([{ code: 'Space' }], 'Start/pause', this.startPause);
+    this.addKeyHandler([{ code: 'Space', shiftKey: true }], 'Reset', this.reset);
   }
 
   mount() {
     console.groupCollapsed(`${this.name} mounted`);
     this.reset();
     this.start();
-    console.groupEnd(`${this.name} mounted`);
+    document.addEventListener('keypress', this.keypressListener);
+    console.groupEnd();
   }
 
   unmount() {
     console.groupCollapsed(`${this.name} unmounted`);
     this.pause();
     this.reset();
-    console.info(`${this.name} unmounted`);
+    document.removeEventListener('keypress', this.keypressListener);
+    console.groupEnd();
   }
 
   animationFrame() {
@@ -61,7 +69,48 @@ class AbstractScene {
       this.pause();
     }
   }
+
+  keypressListener({ code, shiftKey, altKey, ctrlKey, metaKey }) {
+    // See https://jsfiddle.net/h087oLye/
+    // or https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+    // for codes
+    // console.log(`Pressed "${code}"`);
+    const matched = this.keyHandlers.find(({ keys }) => {
+      return keys.some((key) => {
+        return key.code === code
+          && !!(key.shiftKey) === shiftKey
+          && !!(key.altKey) === altKey
+          && !!(key.ctrlKey) === ctrlKey
+          && !!(key.metaKey) === metaKey;
+      });
+    });
+    if (matched && matched.handler) {
+      matched.handler();
+    }
+  }
+
+  addKeyHandler(keys, description, handler) {
+    const humanFriendlyKeys = getHumanFriendlyShortcuts(keys);
+    this.keyHandlers.push({
+      keys,
+      humanFriendlyKeys,
+      description,
+      handler: handler.bind(this)
+    });
+    console.info(`"${humanFriendlyKeys}" registered as "${description}"`);
+  }
 }
 
+function getHumanFriendlyShortcuts(keys) {
+  return keys.map(({ code, shiftKey, altKey, ctrlKey, metaKey }) => {
+    let keyName = shiftKey ? 'Shift ' : '';
+    keyName += ctrlKey ? 'Ctrl ' : '';
+    keyName += altKey ? 'Alt ' : '';
+    keyName += metaKey ? 'Meta ' : '';
+    keyName += keyName ? '- ' : '';
+    keyName += code.replace(/^(Key|Digit)/, '');
+    return keyName;
+  }).join(', ');
+}
 
 module.exports = AbstractScene;

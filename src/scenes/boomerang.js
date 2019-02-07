@@ -83,24 +83,6 @@ class Boomerang extends AbstractScene {
     this.linesCount = 20;
     this.blurTrail = [];
     this._hue = 0;
-
-    this.keypressListener = ({ charCode, shiftKey }) => {
-      // console.log('Pressed ', charCode);
-      if (charCode === 32 /* space */) {
-        if (shiftKey) {
-          this.reset();
-        } else {
-          this.startPause();
-        }
-      }
-
-      if (charCode === 43 /* + */ || charCode === 61 /* = */) {
-        this.linesCount = Math.min(++this.linesCount, 100);
-      }
-      if (charCode === 45 /* - */) {
-        this.linesCount = Math.max(--this.linesCount, 1);
-      }
-    };
   }
 
 
@@ -110,11 +92,6 @@ class Boomerang extends AbstractScene {
       this._hue = 0;
     }
     return Math.round(this._hue);
-  }
-
-
-  init(renderer) {
-    super.init(renderer);
   }
 
 
@@ -129,17 +106,15 @@ class Boomerang extends AbstractScene {
     this.linesCount = 20;
   }
 
-
-  mount() {
-    super.mount();
-    document.addEventListener('keypress', this.keypressListener);
+  init(renderer) {
+    super.init(renderer);
+    this.addKeyHandler([{ code: 'Equal' }], 'Grow blur tail', () => {
+      this.linesCount = Math.min(++this.linesCount, 100);
+    });
+    this.addKeyHandler([{ code: 'Minus' }], 'Shrink blur tail', () => {
+      this.linesCount = Math.max(--this.linesCount, 1);
+    });
   }
-
-  unmount() {
-    super.unmount();
-    document.removeEventListener('keypress', this.keypressListener);
-  }
-
 
   animationFrame() {
     for (let i = this.linesCount - 1; i > 0; i--) {
