@@ -1,0 +1,18 @@
+nav {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2em;
+
+  background-color: hsla(0, 0%, 80%, .5);
+  transition: top .3s ease-in-out;
+
+
+  &.hidden {
+    top: -10em;
+  }
+}
+
+
