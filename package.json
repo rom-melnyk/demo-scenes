@@ -4,8 +4,8 @@
   "description": "Demo scenes (HTML/CSS, Canvas, Typescript)",
   "main": "./src/ts/index.ts",
   "scripts": {
-    "dev": "rm -fr dist > /dev/null && parcel serve -p 9000 --public-url . ./src/index.html",
-    "demo": "rm -fr dist > /dev/null && parcel serve -p 9000 --no-cache --no-source-maps --open ./src/index.html",
+    "dev": "rm -fr dist > /dev/null && parcel -p 9000 ./src/index.html",
+    "demo": "rm -fr dist > /dev/null && parcel serve --open -p 9000 --no-cache --no-source-maps ./src/index.html",
     "prod": "rm -fr dist > /dev/null && parcel build --public-url . --no-cache --no-source-maps ./src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
