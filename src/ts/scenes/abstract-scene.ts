@@ -1,22 +1,36 @@
-class AbstractScene {
-  constructor() {
-    this.isPaused = true;
-    this.renderer = null;
-    this.name = 'AbstractScene';
-    this.keyHandlers = [
-      /* { keys: [ {code, shiftKey?, ctrlKey?, altKey?} ], description: '', handler() {} } */
-    ];
+import { Renderer } from '../renderer';
+
+interface KeyPressed {
+  code: string;
+  shiftKey?: boolean;
+  altKey?: boolean;
+  ctrlKey?: boolean;
+  metaKey?: boolean;
+}
+
+export abstract class AbstractScene {
+  public name = 'AbstractScene';
+  private isPaused = true;
+  protected renderer: Renderer = null;
+  private keyHandlers: Array<{
+    keys: KeyPressed[];
+    humanFriendlyKeys: string;
+    description: string;
+    handler: () => void;
+  }> = [];
+
+  protected constructor() {
     this.keypressListener = this.keypressListener.bind(this);
   }
 
-  init(renderer) {
+  public init(renderer: Renderer) {
     this.renderer = renderer;
     console.info(`${this.name} initialized`);
     this.addKeyHandler([{ code: 'Space' }], 'Start/pause', this.startPause);
     this.addKeyHandler([{ code: 'Space', shiftKey: true }], 'Reset', this.reset);
   }
 
-  mount() {
+  public mount() {
     console.groupCollapsed(`${this.name} mounted`);
     this.reset();
     this.start();
@@ -24,7 +38,7 @@ class AbstractScene {
     console.groupEnd();
   }
 
-  unmount() {
+  public unmount() {
     console.groupCollapsed(`${this.name} unmounted`);
     this.pause();
     this.reset();
@@ -32,11 +46,9 @@ class AbstractScene {
     console.groupEnd();
   }
 
-  animationFrame() {
-    // To be implemented in concrete class
-  }
+  protected abstract animationFrame(): void;
 
-  animate() {
+  private animate() {
     this.renderer.clear();
     this.animationFrame();
     if (!this.isPaused) {
@@ -46,23 +58,23 @@ class AbstractScene {
     }
   }
 
-  start() {
+  public start() {
     this.isPaused = false;
     this.animate();
     console.info(`${this.name} started`);
   }
 
-  reset() {
+  public reset() {
     this.renderer.clear();
     console.info(`${this.name} reset`);
   }
 
-  pause() {
+  public pause() {
     this.isPaused = true;
     console.info(`${this.name} paused`);
   }
 
-  startPause() {
+  public startPause() {
     if (this.isPaused) {
       this.start();
     } else {
@@ -70,18 +82,18 @@ class AbstractScene {
     }
   }
 
-  keypressListener({ code, shiftKey, altKey, ctrlKey, metaKey }) {
+  private keypressListener(event: KeyboardEvent) {
     // See https://jsfiddle.net/h087oLye/
     // or https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
     // for codes
     // console.log(`Pressed "${code}"`);
     const matched = this.keyHandlers.find(({ keys }) => {
       return keys.some((key) => {
-        return key.code === code
-          && !!(key.shiftKey) === shiftKey
-          && !!(key.altKey) === altKey
-          && !!(key.ctrlKey) === ctrlKey
-          && !!(key.metaKey) === metaKey;
+        return key.code === event.code
+          && !!(key.shiftKey) === event.shiftKey
+          && !!(key.altKey) === event.altKey
+          && !!(key.ctrlKey) === event.ctrlKey
+          && !!(key.metaKey) === event.metaKey;
       });
     });
     if (matched && matched.handler) {
@@ -89,7 +101,7 @@ class AbstractScene {
     }
   }
 
-  addKeyHandler(keys, description, handler) {
+  addKeyHandler(keys: KeyPressed[], description: string, handler: () => void) {
     const humanFriendlyKeys = getHumanFriendlyShortcuts(keys);
     this.keyHandlers.push({
       keys,
@@ -101,7 +113,7 @@ class AbstractScene {
   }
 }
 
-function getHumanFriendlyShortcuts(keys) {
+function getHumanFriendlyShortcuts(keys: KeyPressed[]): string {
   return keys.map(({ code, shiftKey, altKey, ctrlKey, metaKey }) => {
     let keyName = shiftKey ? 'Shift ' : '';
     keyName += ctrlKey ? 'Ctrl ' : '';
@@ -112,5 +124,3 @@ function getHumanFriendlyShortcuts(keys) {
     return keyName;
   }).join(', ');
 }
-
-module.exports = AbstractScene;

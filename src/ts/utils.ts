@@ -1,22 +1,22 @@
-function round(number, power = 0) {
+export function round(n: number, power = 0): number {
   if (power < 0) {
     const pow = Math.pow(10, -power);
-    return Math.round(number * pow) / pow;
+    return Math.round(n * pow) / pow;
   } else {
     const pow = Math.pow(10, power);
-    return Math.round(number / pow) * pow;
+    return Math.round(n / pow) * pow;
   }
 }
 
 
-function random(from = 0, to = 1) {
+export function random(from = 0, to = 1): number {
   return Math.floor(
     Math.random() * (to - from) + from
   );
 }
 
 
-function hslaColor(h, s, l, alpha = 1) {
+export function hslaColor(h: number, s: number, l: number, alpha = 1): string {
   // quick HSL channels normalization
   if (h < 0) {
     h = 360 - (360 - h) % 360;
@@ -30,10 +30,3 @@ function hslaColor(h, s, l, alpha = 1) {
 
   return `hsla(${h}, ${s}%, ${l}%, ${alpha})`;
 }
-
-
-module.exports = {
-  round,
-  random,
-  hslaColor,
-};

@@ -1,9 +1,22 @@
-const AbstractScene = require('./abstract-scene');
-const { renderer, LINE_STYLE } = require('../renderer');
-const { round, hslaColor, random } = require('../utils');
+import { AbstractScene } from './abstract-scene';
+import { renderer, LINE_STYLE, Renderer } from '../renderer';
+import { round, hslaColor, random } from '../utils';
 
 
 class Line {
+  private readonly cnvWidth: number;
+  private readonly cnvHeight: number;
+
+  private x1: number;
+  private y1: number;
+  private x2: number;
+  private y2: number;
+
+  private dx1: number;
+  private dy1: number;
+  private dx2: number;
+  private dy2: number;
+
   constructor(cnvWidth = 0, cnvHeight = 0) {
     this.cnvWidth = cnvWidth;
     this.cnvHeight = cnvHeight;
@@ -19,7 +32,7 @@ class Line {
     this.dy2 = round((Math.random() * 2 - 1) * 10, -1);
   }
 
-  move() {
+  public move() {
     this.x1 += this.dx1;
     if (this.x1 < 0) {
       this.x1 = -this.x1;
@@ -61,32 +74,33 @@ class Line {
     }
   }
 
-  clone() {
+  public clone() {
     const cloned = new Line();
     Object.assign(cloned, this);
     return cloned;
   }
 
-  draw(renderer, { color, width }) {
+  public draw(renderer: Renderer, { color, width }: { color: string; width: number; }) {
     renderer.drawLine(
       this.x1, this.y1, this.x2, this.y2,
-      { color, width, cap: LINE_STYLE.Cap.Round }
+      { color, width, cap: LINE_STYLE.Cap.round }
     );
   };
 }
 
 
 class Boomerang extends AbstractScene {
+  public name = 'Boomerang';
+  private linesCount: number = 20;
+  private blurTrail: Array<{ line: Line; hue: number; }> = [];
+  private _hue = 0;
+
   constructor() {
     super();
-    this.name = 'Boomerang';
-    this.linesCount = 20;
-    this.blurTrail = [];
-    this._hue = 0;
   }
 
 
-  get hue() {
+  private get hue() {
     this._hue += .5;
     if (this._hue > 360) {
       this._hue = 0;
@@ -106,7 +120,7 @@ class Boomerang extends AbstractScene {
     this.linesCount = 20;
   }
 
-  init(renderer) {
+  public init(renderer: Renderer) {
     super.init(renderer);
     this.addKeyHandler([{ code: 'Equal' }], 'Grow blur tail', () => {
       this.linesCount = Math.min(++this.linesCount, 100);
@@ -116,7 +130,7 @@ class Boomerang extends AbstractScene {
     });
   }
 
-  animationFrame() {
+  protected animationFrame() {
     for (let i = this.linesCount - 1; i > 0; i--) {
       const lineAndHue = this.blurTrail[i - 1];
       this.blurTrail[i] = lineAndHue;
@@ -141,6 +155,4 @@ class Boomerang extends AbstractScene {
 }
 
 
-const boomerang = new Boomerang();
-
-module.exports = { boomerang };
+export const boomerang = new Boomerang();

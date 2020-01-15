@@ -1,19 +1,19 @@
 class Navigation {
+  private navEl: HTMLElement = null;
+  private navHideTimer: number = null;
+
   constructor() {
-    this.navEl = null;
-    this.navHideTimer = null;
     this.mouseMoveListener = this.mouseMoveListener.bind(this);
     this.mouseOverListener = this.mouseOverListener.bind(this);
     this.mouseOutListener = this.mouseOutListener.bind(this);
   }
 
-
-  init(selector) {
-    if (!(selector instanceof HTMLElement)) {
-      throw new Error(`Navigation must be initialized with an HTMLElement`);
+  public init(selector: string) {
+    this.navEl = document.querySelector(selector);
+    if (!this.navEl) {
+      throw new Error('Navigation must be initialized with an CSS selector of <nav> element');
     }
 
-    this.navEl = selector;
     this.scheduleNavHide();
 
     document.addEventListener('mousemove', this.mouseMoveListener);
@@ -21,16 +21,16 @@ class Navigation {
     this.navEl.addEventListener('mouseout', this.mouseOutListener);
   }
 
+  public addDemoScenes() {
+    // TODO
+  }
 
-  addDemoScenes(demoscenes) {
+  public removeDemoScenes() {
+    // TODO
   }
 
 
-  removeDemoScenes() {
-  }
-
-
-  unmount() {
+  public unmount() {
     clearTimeout(this.navHideTimer);
     this.navEl.classList.add('hidden');
 
@@ -40,7 +40,7 @@ class Navigation {
   }
 
 
-  scheduleNavHide() {
+  private scheduleNavHide() {
     this.navHideTimer = setTimeout(() => {
       this.navEl.classList.add('hidden');
       this.navHideTimer = null;
@@ -64,6 +64,4 @@ class Navigation {
 }
 
 
-const navigation = new Navigation();
-
-module.exports = { navigation };
+export const navigation = new Navigation();
